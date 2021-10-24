@@ -18,5 +18,5 @@ public interface OfferService {
 
   void updateOffer(OfferUpdateServiceModel offerModel);
 
-  OfferAddServiceModel addOffer(OfferAddBindModel offerAddBindModel);
+  OfferAddServiceModel addOffer(OfferAddBindModel offerAddBindModel, String username);
 }

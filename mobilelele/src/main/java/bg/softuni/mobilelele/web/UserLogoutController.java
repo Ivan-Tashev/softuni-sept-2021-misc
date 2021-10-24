@@ -13,10 +13,9 @@ public class UserLogoutController {
     this.userService = userService;
   }
 
-  @GetMapping("/users/logout")
-  public String logout() {
-    userService.logout();
-    return "redirect:/";
-  }
-
+//  @GetMapping("/users/logout")
+//  public String logout() {
+//    userService.logout();
+//    return "redirect:/";
+//  }
 }

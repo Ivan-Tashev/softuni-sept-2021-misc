@@ -13,7 +13,8 @@ import bg.softuni.mobilelele.repository.ModelRepository;
 import bg.softuni.mobilelele.repository.OfferRepository;
 import bg.softuni.mobilelele.repository.UserRepository;
 import bg.softuni.mobilelele.service.OfferService;
-import bg.softuni.mobilelele.user.CurrentUser;
+import bg.softuni.mobilelele.service.UserService;
+import bg.softuni.mobilelele.user.MobileleleUserDetailsService;
 import bg.softuni.mobilelele.web.exception.ObjectNotFoundException;
 import java.time.Instant;
 import java.util.List;
@@ -28,14 +29,14 @@ public class OfferServiceImpl implements OfferService {
     private final ModelMapper modelMapper;
     private final ModelRepository modelRepository;
     private final UserRepository userRepository;
-    private final CurrentUser currentUser;
+    private final UserService userService;
 
-    public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, ModelRepository modelRepository, UserRepository userRepository, CurrentUser currentUser) {
+    public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, ModelRepository modelRepository, UserRepository userRepository, UserService userService) {
         this.offerRepository = offerRepository;
         this.modelMapper = modelMapper;
         this.modelRepository = modelRepository;
         this.userRepository = userRepository;
-        this.currentUser = currentUser;
+        this.userService = userService;
     }
 
     @Override
@@ -114,11 +115,11 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public OfferAddServiceModel addOffer(OfferAddBindModel offerAddBindModel) {
+    public OfferAddServiceModel addOffer(OfferAddBindModel offerAddBindModel, String username) {
         OfferAddServiceModel offerAddServiceModel = modelMapper.map(offerAddBindModel, OfferAddServiceModel.class);
         OfferEntity newOffer = modelMapper.map(offerAddServiceModel, OfferEntity.class);
         newOffer.setCreated(Instant.now());
-        newOffer.setSeller(userRepository.findByUsername(currentUser.getUserName()).orElseThrow());
+        newOffer.setSeller(userRepository.findByUsername(username).orElseThrow());
         ModelEntity model = modelRepository.getById(offerAddBindModel.getModelId());
         newOffer.setModel(model);
 
